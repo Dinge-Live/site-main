@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { useCart } from "@/lib/cart-context";
 import Image from "next/image";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
@@ -52,6 +53,7 @@ const ScrambleText = ({ text }: { text: string }) => {
 };
 
 export default function Navbar() {
+  const router = useRouter();
   const { itemCount, isOpen, setIsOpen, items, removeItem, total, clearCart, updateQuantity } = useCart();
   const [checkoutMode, setCheckoutMode] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -163,7 +165,11 @@ export default function Navbar() {
         throw new Error(data.error || "Checkout failed");
       }
       
-      setSubmitted(true);
+      // Redirect to thank you page after successful order
+      setTimeout(() => {
+        clearCart();
+        router.push("/thank-you?success=true");
+      }, 1000);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Checkout failed");
       captchaRef.current?.resetCaptcha();
