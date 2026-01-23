@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import { useRouter, useSearchParams } from "next/navigation";
+import CategoryMenu, { Category } from "./category-menu";
 
 interface Product {
   id: string;
@@ -9,89 +11,47 @@ interface Product {
   price: string;
   href: string;
   images: string[];
+  category: string;
+  subcategory: string;
 }
 
+const categories: Category[] = [
+  {
+    id: "tshirts",
+    name: "T-SHIRTS",
+    subcategories: [
+      { id: "all-over", name: "All Over" },
+      { id: "bw", name: "B&W" },
+      { id: "cars", name: "Cars" },
+      { id: "limited", name: "Limited Edition" },
+    ],
+  },
+  {
+    id: "headwear",
+    name: "HEADWEAR",
+    subcategories: [
+      { id: "caps", name: "Caps" },
+      { id: "beanies", name: "Beanies" },
+    ],
+  },
+  {
+    id: "outerwear",
+    name: "OUTERWEAR",
+    subcategories: [
+      { id: "bombers", name: "Bombers" },
+      { id: "jackets", name: "Jackets" },
+    ],
+  },
+];
+
 const products: Product[] = [
-  {
-    id: "band-t-shirt-black",
-    title: "BAND T-SHIRT",
-    price: "£50.00",
-    href: "/product/band-t-shirt-black",
-    images: [
-      "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/0c6ac1c5-1c7c-4284-bf23-5e189c7e3f9e-nofear-com/assets/images/NF-49_23b89356-fd9d-4e99-ad99-9e60c0f1fd4e-1.jpg",
-      "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/0c6ac1c5-1c7c-4284-bf23-5e189c7e3f9e-nofear-com/assets/images/NF-50_7a6ca7e8-3ed2-4dc1-a6df-8b60ed601d28-2.jpg",
-      "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/0c6ac1c5-1c7c-4284-bf23-5e189c7e3f9e-nofear-com/assets/images/BAND-TEE-BLACK-FRONT-3.jpg",
-      "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/0c6ac1c5-1c7c-4284-bf23-5e189c7e3f9e-nofear-com/assets/images/BAND-TEE-BLACK-BACK-4.jpg",
-    ],
-  },
-  {
-    id: "band-t-shirt-grey",
-    title: "BAND T-SHIRT",
-    price: "£50.00",
-    href: "/product/band-t-shirt-grey",
-    images: [
-      "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/0c6ac1c5-1c7c-4284-bf23-5e189c7e3f9e-nofear-com/assets/images/NF-47_62ab66f8-cf0a-4fb8-bdd5-a2133f9c5350-5.jpg",
-      "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/0c6ac1c5-1c7c-4284-bf23-5e189c7e3f9e-nofear-com/assets/images/NF-48_9fd908bb-d881-4cc6-bb13-65425bbaac63-6.jpg",
-      "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/0c6ac1c5-1c7c-4284-bf23-5e189c7e3f9e-nofear-com/assets/images/BAND-TEE-GREY-FRONT-7.jpg",
-      "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/0c6ac1c5-1c7c-4284-bf23-5e189c7e3f9e-nofear-com/assets/images/BAND-TEE-GREY-BACK-8.jpg",
-    ],
-  },
-  {
-    id: "band-cap",
-    title: "BAND CAP",
-    price: "£60.00",
-    href: "/product/band-cap",
-    images: [
-      "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/0c6ac1c5-1c7c-4284-bf23-5e189c7e3f9e-nofear-com/assets/images/NE01-9.jpg",
-      "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/0c6ac1c5-1c7c-4284-bf23-5e189c7e3f9e-nofear-com/assets/images/NE02-10.jpg",
-    ],
-  },
-  {
-    id: "nylon-patch-bomber",
-    title: "NYLON PATCH BOMBER",
-    price: "£425.00",
-    href: "/product/nylon-patch-bomber",
-    images: [
-      "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/0c6ac1c5-1c7c-4284-bf23-5e189c7e3f9e-nofear-com/assets/images/NF-4_1f2a622c-4149-4346-b95b-1bbc3e07501a-11.jpg",
-      "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/0c6ac1c5-1c7c-4284-bf23-5e189c7e3f9e-nofear-com/assets/images/NF-5_dcb27df6-0668-4ef9-a29d-f8837856d74a-12.jpg",
-      "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/0c6ac1c5-1c7c-4284-bf23-5e189c7e3f9e-nofear-com/assets/images/BOMBER-BLACK-FRONT_cbeb5574-9e12-4c3b-95e1-18afeec-16.jpg",
-    ],
-  },
-  {
-    id: "rib-beanie-white",
-    title: "RIB BEANIE",
-    price: "£50.00",
-    href: "/product/rib-beanie-white",
-    images: [
-      "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/0c6ac1c5-1c7c-4284-bf23-5e189c7e3f9e-nofear-com/assets/images/NF-1-18.jpg",
-      "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/0c6ac1c5-1c7c-4284-bf23-5e189c7e3f9e-nofear-com/assets/images/NF-50_7a6ca7e8-3ed2-4dc1-a6df-8b60ed601d28-2.jpg",
-    ],
-  },
-  {
-    id: "rib-beanie-black",
-    title: "RIB BEANIE",
-    price: "£50.00",
-    href: "/product/rib-beanie-black",
-    images: [
-      "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/0c6ac1c5-1c7c-4284-bf23-5e189c7e3f9e-nofear-com/assets/images/NF-50_7a6ca7e8-3ed2-4dc1-a6df-8b60ed601d28-2.jpg",
-      "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/0c6ac1c5-1c7c-4284-bf23-5e189c7e3f9e-nofear-com/assets/images/NF-1-18.jpg",
-    ],
-  },
-  {
-    id: "eyes-photo-t-shirt-arca",
-    title: "EYES PHOTO T-SHIRT [ARCA]",
-    price: "£100.00",
-    href: "/product/eyes-photo-t-shirt-arca",
-    images: [
-      "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/0c6ac1c5-1c7c-4284-bf23-5e189c7e3f9e-nofear-com/assets/images/NF-64-23.jpg",
-      "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/0c6ac1c5-1c7c-4284-bf23-5e189c7e3f9e-nofear-com/assets/images/BAND-TEE-BLACK-FRONT-3.jpg",
-    ],
-  },
   {
     id: "eyes-photo-t-shirt-blackhaine",
     title: "EYES PHOTO T-SHIRT [BLACKHAINE]",
     price: "£100.00",
     href: "/product/eyes-photo-t-shirt-blackhaine",
+    category: "tshirts",
+    subcategory: "graphic",
     images: [
       "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/0c6ac1c5-1c7c-4284-bf23-5e189c7e3f9e-nofear-com/assets/images/BLACKHAINE-TEE-BLACK-FRONT-29.jpg",
       "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/0c6ac1c5-1c7c-4284-bf23-5e189c7e3f9e-nofear-com/assets/images/BAND-TEE-BLACK-FRONT-3.jpg",
@@ -144,24 +104,64 @@ const ProductCard = ({ product }: { product: Product }) => {
 };
 
 export default function ProductGrid() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(
+    searchParams.get("category")
+  );
+  const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(
+    searchParams.get("subcategory")
+  );
+
+  const handleCategoryChange = (categoryId: string | null, subcategoryId: string | null) => {
+    setSelectedCategory(categoryId);
+    setSelectedSubcategory(subcategoryId);
+
+    // Update URL params
+    const params = new URLSearchParams();
+    if (categoryId) params.set("category", categoryId);
+    if (subcategoryId) params.set("subcategory", subcategoryId);
+    router.push(`/shop${params.toString() ? `?${params.toString()}` : ""}`);
+  };
+
+  // Filter products
+  const filteredProducts = products.filter((product) => {
+    if (!selectedCategory) return true;
+    if (selectedCategory === product.category) {
+      if (!selectedSubcategory) return true;
+      return selectedSubcategory === product.subcategory;
+    }
+    return false;
+  });
+
   return (
-    <div className="relative z-10 bg-black text-white font-mono uppercase antialiased">
-      <div className="grid grid-cols-2 border-t border-l border-white md:grid-cols-4">
-        {products.map((product) => (
+    <div className="relative bg-black text-white font-mono uppercase antialiased">
+      <div className="grid grid-cols-2 border-t border-l border-white md:grid-cols-4 relative">
+        {filteredProducts.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
-        {[...Array(4 - (products.length % 4))].map((_, i) => (
+        {[...Array(Math.max(0, 4 - (filteredProducts.length % 4)))].map((_, i) => (
           <div 
             key={`filler-${i}`} 
-            className={`hidden md:block border-b border-r border-white aspect-[1/1.2] ${i === (4 - (products.length % 4)) - 1 ? '' : ''}`} 
+            className={`hidden md:block border-b border-r border-white aspect-[1/1.2]`} 
           />
         ))}
-        {[...Array(2 - (products.length % 2))].map((_, i) => (
+        {[...Array(Math.max(0, 2 - (filteredProducts.length % 2)))].map((_, i) => (
           <div 
             key={`filler-mob-${i}`} 
             className="md:hidden border-b border-r border-white aspect-[1/1.2]" 
           />
         ))}
+      </div>
+      
+      {/* Overlay category menu */}
+      <div className="fixed top-14 left-0 right-0 z-40 bg-black border-b border-white pointer-events-auto">
+        <CategoryMenu
+          categories={categories}
+          selectedCategory={selectedCategory}
+          selectedSubcategory={selectedSubcategory}
+          onCategoryChange={handleCategoryChange}
+        />
       </div>
     </div>
   );

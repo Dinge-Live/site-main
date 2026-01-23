@@ -6,8 +6,34 @@ import Script from "next/script";
 import { CartProvider } from "@/lib/cart-context";
 
 export const metadata: Metadata = {
-  title: "NO FEAR - Shop",
-  description: "NO FEAR official shop - Streetwear and apparel",
+  title: "Dinge.Live - Shop",
+  description: "Dinge.Live official shop",
+  openGraph: {
+    title: "Dinge.Live - Shop",
+      description: "Dinge.Live official shop",
+      url: "https://dinge.live",
+    siteName: "Dinge.Live",
+    images: [
+      {
+        url: "/Slice",
+        width: 1200,
+        height: 630,
+        alt: "Dinge.Live Logo",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Dinge.Live - Shop",
+    description: "Dinge.Live official shop",
+    images: [
+      "/Slice",
+    ],
+  },
+  icons: {
+    icon: "/Slice",
+  },
 };
 
 export default function RootLayout({

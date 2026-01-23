@@ -20,10 +20,6 @@ const BackgroundCanvas = () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
 
     const scene = new THREE.Scene();
-
-    // The subtle background effect is typically a fine noise or particle field 
-    // in these brutalist minimalist websites. We'll implement a subtle floating
-    // particle system that matches the "No Fear" aesthetic.
     const camera = new THREE.PerspectiveCamera(
       75,
       window.innerWidth / window.innerHeight,
@@ -32,9 +28,8 @@ const BackgroundCanvas = () => {
     );
     camera.position.z = 5;
 
-    // Create a subtle grain/stars effect 
     const particlesGeometry = new THREE.BufferGeometry();
-    const count = 5000;
+    const count = 10000;
     const positions = new Float32Array(count * 3);
 
     for (let i = 0; i < count * 3; i++) {
@@ -49,10 +44,9 @@ const BackgroundCanvas = () => {
     const particlesMaterial = new THREE.PointsMaterial({
       size: 0.01,
       sizeAttenuation: true,
-      // For dark theme, we use white particles
       color: 0xffffff,
-      transparent: true,
-      opacity: 0.15,
+      transparent: false,
+      opacity: 1,
     });
 
     const particles = new THREE.Points(particlesGeometry, particlesMaterial);

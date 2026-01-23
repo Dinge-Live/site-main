@@ -64,15 +64,15 @@ export default function Navbar() {
   const [formData, setFormData] = useState({
     mobileNumber: "",
     email: "",
-    addressType: "residential",
-    title: "mr",
+    addressType: "Residential",
+    title: "Mr",
     name: "",
     addressLine1: "",
     addressLine2: "",
     locality: "",
     stateProvince: "",
     zipPin: "",
-    country: "GB",
+    country: "USA",
   });
 
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
@@ -180,15 +180,15 @@ export default function Navbar() {
     setFormData({
       mobileNumber: "",
       email: "",
-      addressType: "residential",
-      title: "mr",
+      addressType: "Residential",
+      title: "Mr",
       name: "",
       addressLine1: "",
       addressLine2: "",
       locality: "",
       stateProvince: "",
       zipPin: "",
-      country: "GB",
+      country: "USA",
     });
     setCaptchaToken(null);
     setError(null);
@@ -207,7 +207,7 @@ export default function Navbar() {
             className="bg-black text-white flex items-center justify-center rounded-sm px-3 shadow-md border-none transition-transform active:scale-95"
             style={{ minWidth: "90px" }}
           >
-            <ScrambleText text="NO FEAR" />
+            <ScrambleText text="DINGE.LIVE" />
           </a>
 
           {/* Shop Link */}
@@ -253,7 +253,7 @@ export default function Navbar() {
            <div className="absolute right-0 top-0 h-full w-full max-w-md bg-black text-white shadow-xl flex flex-col border-l border-white">
              <div className="flex items-center justify-between p-4 border-b border-white">
                <h2 className="text-sm font-bold uppercase">
-                 {submitted ? "ORDER CONFIRMED" : checkoutMode ? "CHECKOUT" : "YOUR CART"}
+                 {submitted ? "QUOTE PLACED" : checkoutMode ? "CHECKOUT" : "YOUR CART"}
                </h2>
                <button onClick={closeCart} className="text-xl font-bold hover:opacity-60">&times;</button>
              </div>
@@ -261,9 +261,9 @@ export default function Navbar() {
               {submitted ? (
                 <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
                   <div className="text-4xl mb-4">&#10003;</div>
-                  <p className="text-sm mb-2">Thank you for your order!</p>
+                  <p className="text-sm mb-2">You have just placed a quote!</p>
                   <p className="text-xs text-gray-400">
-                    You will receive an email at <strong>{formData.email}</strong> with a link to pay <strong>£{total}</strong>.
+                    You will receive an email at <strong>{formData.email}</strong> with a link to pay <strong>£{total}</strong>. And more details will be sent to your email.
                   </p>
                   <button
                     onClick={() => { clearCart(); closeCart(); }}
@@ -306,11 +306,11 @@ export default function Navbar() {
                       <div>
                         <label className="text-[10px] uppercase block mb-1">Title*</label>
                         <select value={formData.title} onChange={(e) => setFormData({...formData, title: e.target.value})} className="w-full border border-white px-2 py-1 text-xs bg-black text-white focus:outline-none">
-                          <option value="mr">Mr</option>
-                          <option value="mrs">Mrs</option>
-                          <option value="ms">Ms</option>
-                          <option value="dr">Dr</option>
-                          <option value="other">Other</option>
+                          <option value="Mr">Mr</option>
+                          <option value="Mrs">Mrs</option>
+                          <option value="Ms">Ms</option>
+                          <option value="Dr">Dr</option>
+                          <option value="Other">Other</option>
                         </select>
                       </div>
                       <div className="col-span-2">
@@ -330,9 +330,9 @@ export default function Navbar() {
                     <div>
                       <label className="text-[10px] uppercase block mb-1">Address Type*</label>
                       <select value={formData.addressType} onChange={(e) => setFormData({...formData, addressType: e.target.value})} className="w-full border border-white px-2 py-1 text-xs bg-black text-white focus:outline-none">
-                        <option value="residential">Residential</option>
-                        <option value="commercial">Commercial</option>
-                        <option value="pobox">P.O. Box</option>
+                        <option value="Residential">Residential</option>
+                        <option value="Commercial">Commercial</option>
+                        <option value="P.O. Box">P.O. Box</option>
                       </select>
                     </div>
 
@@ -405,24 +405,14 @@ export default function Navbar() {
                     {/* Country */}
                     <div>
                       <label className="text-[10px] uppercase block mb-1">Country*</label>
-                      <select value={formData.country} onChange={(e) => setFormData({...formData, country: e.target.value})} className="w-full border border-white px-2 py-1 text-xs bg-black text-white focus:outline-none">
-                        <option value="GB">United Kingdom</option>
-                        <option value="US">United States</option>
-                        <option value="CA">Canada</option>
-                        <option value="AU">Australia</option>
-                        <option value="IN">India</option>
-                        <option value="DE">Germany</option>
-                        <option value="FR">France</option>
-                        <option value="IT">Italy</option>
-                        <option value="ES">Spain</option>
-                        <option value="NL">Netherlands</option>
-                        <option value="BE">Belgium</option>
-                        <option value="CH">Switzerland</option>
-                        <option value="SE">Sweden</option>
-                        <option value="NO">Norway</option>
-                        <option value="DK">Denmark</option>
-                        <option value="IE">Ireland</option>
-                      </select>
+                      <input
+                        type="text"
+                        value={formData.country}
+                        onChange={(e) => setFormData({...formData, country: e.target.value})}
+                        placeholder="Country"
+                        className="w-full border border-white px-2 py-1 text-xs focus:outline-none bg-black text-white placeholder-gray-500"
+                      />
+                      {validationErrors.country && <p className="text-[9px] text-red-500">{validationErrors.country}</p>}
                     </div>
 
                     {/* Captcha */}
@@ -461,7 +451,7 @@ export default function Navbar() {
                       className="flex-1 py-2 bg-white text-black text-[10px] font-bold hover:bg-neutral-200 disabled:opacity-50"
                       disabled={isSubmitting || !captchaToken}
                     >
-                      {isSubmitting ? "SUBMITTING..." : "SUBMIT ORDER"}
+                      {isSubmitting ? "SUBMITTING..." : "PLACE QUOTE"}
                     </button>
                   </div>
                 </form>
