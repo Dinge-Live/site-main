@@ -1,5 +1,5 @@
 import Navbar from "@/components/sections/navbar";
-import ProductGrid from "@/components/sections/product-grid";
+import ProductGridWrapper from "@/components/sections/product-grid-wrapper";
 import BackgroundCanvas from "@/components/sections/background-canvas";
 
 export default function Home() {
@@ -8,7 +8,7 @@ export default function Home() {
       <BackgroundCanvas />
       <Navbar />
       <div className="pt-14">
-        <ProductGrid />
+        <ProductGridWrapper />
       </div>
     </main>
   );
